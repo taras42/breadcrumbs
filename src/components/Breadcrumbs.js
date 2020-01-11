@@ -35,12 +35,12 @@ const Breadcrumbs = (props) => {
             {
                 props.breadcrumbs.map((breadcrumb, index) => {
                     return (
-                        <>
-                            {index !== 0 ? <SeparatorComponent/> : <></>}
-                            <BreadcrumbComponent {...breadcrumb} onClick={() => {
+                        <React.Fragment key={breadcrumb + index}>
+                            {index !== 0 && <SeparatorComponent/>}
+                            <BreadcrumbComponent label={breadcrumb} onClick={() => {
                                 props.onClick(breadcrumb, index)
                             }} />
-                        </>
+                        </React.Fragment>
                     )
                 })
             }

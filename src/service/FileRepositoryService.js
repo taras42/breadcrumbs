@@ -4,28 +4,29 @@ import resourceType from './enum/resourceType';
 const pathSeparator = '/';
 
 class FileRepositoryService {
-    async getContents(path) {
+    getContents(path) {
         let splitPath = path === pathSeparator ? [''] : path.split(pathSeparator);
         splitPath = splitPath.slice(1, splitPath.length);
 
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 let response = {};
-                let level = data;
+                let name = Object.keys(data)[0];
+                let level = data[name];
 
                 if (splitPath.length > 0) {
                     level = splitPath.reduce((memo, pathFragment) => {
-                        memo.result = data.children[pathFragment];
-
+                        memo.result = memo.currentLevel.children[pathFragment];
+                        memo.currentLevel = memo.result;
+                        name = pathFragment;
 
                         return memo;
                     }, {
                         result: null,
-                        currentLevel: data
-                    });
+                        currentLevel: level
+                    }).result;
                 }
 
-                const name = Object.keys(level)[0];
                 const type = level.type;
 
                 response.name = name;
@@ -39,6 +40,8 @@ class FileRepositoryService {
                         }
                     });
                 }
+
+                resolve(response);
             }, 1000);
         });
     }
